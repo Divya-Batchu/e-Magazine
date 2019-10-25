@@ -1,0 +1,241 @@
+events.php
+--------------
+
+<html>
+<head>
+<title>Events Page</title>
+
+</head>
+<body style="background-image:url(img2.jpg);color:white;">
+
+<marquee scrollamount="7"
+direction="right"
+behavior="scroll">
+ EVENTS NEAR BY 
+</marquee>
+<br><br>
+<?php 
+	$con=mysqli_connect("localhost","root","","charan");
+	$sql="SELECT * from pceventslist";
+	$result=$con->query($sql);
+	if($result->num_rows>0)
+	{
+echo "<table  border=1 font-size=10px align=center cellspacing='3' cellpadding='20' width=50% height=15%><tr style='font-size:22px;'><th>S.No</th><th>Date</th><th>Event</th>
+<th>Target</th><th>Time</th><th>Venue</th></tr>";
+$SNo=0;
+while($row=$result->fetch_assoc())
+{
+$SNo=$SNo+1;
+echo "<tr><td>".$SNo."</td.><td>".$row['Date']."</td><td>".$row['Event']."</td><td>".$row['Target']."</td><td>".$row['Time']."</td><td>".$row['Venue']."</td></tr>";
+}
+echo "</table>";
+}
+else
+{
+	echo "No records";
+	$con->close();
+}
+ ?>
+ </br><center><form action="login.php">
+    <input type="submit" value="Add/Delete an Event" /></br>
+</form></center><br>
+ </body>
+ </html>
+ 
+ login.php
+ -----------------------------------------------------------
+ 
+ <?php
+setCookie("Username","admin",time()+ 50 * 60,"/","",0);
+setCookie("Password","admin",time()+ 50 * 60,"/","",0); ?>
+<html> <head> <title>Admin Login</title> </head>
+<body style="background-image:url(img2.jpg);align="center"> 
+<form action="check.php" method="post">
+<table width="20%" bgcolor="orange" align="center">
+
+<tr>
+<td colspan=2><center><font size=4><b>Login Page</b></font></center></td>
+</tr>
+
+<tr>
+<td>Username:</td>
+<td><input type="text" size=25 name="userid"></td>
+</tr>
+
+<tr>
+<td>Password:</td>
+<td><input type="Password" size=25 name="pwd"></td>
+</tr>
+<tr><td align="center"><input type="submit"
+value="Sign-In"></td></tr>
+</form>
+</table>
+</div>
+</body>
+</html>
+
+--------------------------------------------------------------------
+
+check.php
+--
+<html>
+<body>
+<body style="background-image:url(img2.jpg);color:white;"bgcolor="cyan" >
+<?php
+$v=$_COOKIE['Username'];
+$p=$_COOKIE['Password'];
+$u=$_POST['userid'];
+$a=$_POST['pwd'];
+if($v==$u)
+{
+if($p==$a)
+{
+echo "<h1 align='center'>Welcome $u </h1>";
+echo "<center><a href='createevent.php' target='_parent'><input type='button' name='triggerevent' value='Add An Event'></a></br></br></br></br></center>";
+echo "<center><a href='Deleteevent.php' target='_parent'><input type='button' name='triggerevent' value='Delete An Event'></a></br></br></br></br></center>";
+} 
+else {
+echo "<script type='text/javascript'>";
+echo "alert('Please check Your Password or UserName')";
+echo "</script>"; } }
+else {
+echo "<script type='text/javascript'>";
+echo "alert('Please check Your Password or Username')";
+echo "</script>"; }
+?> 
+<center><a style="color:white;"href='login.php' style='font-size:20px;' target='_parent'>GO BACK</a></center>
+</body> 
+</html>
+
+------------------------------------------------------------
+
+createevent.php
+--
+<html>
+<head>
+<title>Create Event</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+<body style="background-image:url(img2.jpg);color:white;"bgcolor="cyan" >
+<div class="container-fluid" style="margin-left:400px;border:2px 
+dashed blue;width:600px;height:425px;float:left;">
+<form action="store.php" method="post">
+<table align="center"width="50%" border="0"cellspacing="3"cellpadding="15">
+<h1 align="center"><i>Fill Credentials to Raise event</i></h1><hr>
+<tr>
+<td align="center">Event date</td>
+<td style="color:black;"align="center"><input type="date" name="edate" placeholder="yyyy-mm-dd" required></td>
+</tr>
+<tr>
+<td align="center">Event Name</td>
+<td align="center"><input type="text" name="ename" required></td>
+</tr>
+<tr>
+<td align="center">Target Year</td>
+<td align="center"><input type="text" name="targyear" placeholder="I/II/III/IV year" required></td>
+</tr>
+<tr>
+<td align="center">Time</td>
+<td style="color:black;"align="center"><input type="time" name="time" required></td>
+</tr>
+<tr>
+<td align="center">Venue</td>
+<td align="center"><input type="text" name="venue" required>
+</td>
+</tr>
+<tr>
+<td style="color:black;"align="center"><input type="reset"value="RESET">
+</td>
+<td style="color:black;"align="center"><input type="submit" name="submit" value="SUBMIT"onClick="alert('Triggered suucessfully')"></td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>
+
+----------------------------------------------
+deleteevent.php
+------------
+<html>
+<head>
+<title>Create Event</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</head>
+<body style="background-image:url(img2.jpg);color:white;"bgcolor="cyan" >
+<div class="container-fluid" style="margin-left:400px;border:2px 
+dashed blue;width:600px;height:425px;float:left;">
+<form action="check2.php" method="post">
+<table align="center"width="50%" border="0"cellspacing="3"cellpadding="15">
+<h1 align="center"><i>Enter THe Event name to be deleted</i></h1><hr>
+<tr>
+<td align="center">Event Name</td>
+<td align="center"><input type="text" name="ename" required></td>
+</tr>
+<td style="color:black;"align="center"><input type="submit" name="submit" value="SUBMIT"onClick="alert('deleted suucessfully')"></td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>
+
+------------------------------------------------------------------------------
+check2.php
+-----------------------------------
+
+<?php
+	$d="";
+	$d=$_POST['ename'];
+	$con=mysqli_connect("localhost","root","","charan");
+	if(!$con)
+	{
+		die("Connection failed:".mysqli_connect_error());
+	}
+	$re="";
+	$ch="DELETE FROM pceventslist where Event='$d'";
+	if(mysqli_query($con,$ch))
+	{
+		echo "<html>";
+		echo "<body>";
+		echo "Deleted suucessfully<br><br>";
+		echo "<br><a href='events.php' style='font-size:30px;' target='_parent'>View events</a><br><br>";
+		echo "</body>";
+		echo "</html>";
+	}
+	?>
+	
+	
+--------------------------------------------------------------------------------------------
+store.php
+--------------------------------------------------------
+<?php
+	$d=$e=$tg=$t=$v="";
+	$d=$_POST['edate'];
+	$e=$_POST['ename'];
+	$tg=$_POST['targyear'];
+	$t=$_POST['time'];
+	$v=$_POST['venue'];
+	$con=mysqli_connect("localhost","root","","charan");
+	if(!$con)
+	{
+		die("Connection failed:".mysqli_connect_error());
+	}
+	$re="";
+	$ch="INSERT INTO pceventslist(Date,Event,Target,Time,Venue)VALUES('".$d."','".$e."','".$tg."','".$t."','".$v."')";
+	if(mysqli_query($con,$ch))
+	{
+		echo "<html>";
+		echo "<body>";
+		echo "<h3 align='center'>Succesfully Stored</h3>";
+		echo "<br><a href='events.php' style='font-size:20px;' target='_parent'> View Events</a>";
+		echo "</body>";
+		echo "</html>";
+	}
+	?>
